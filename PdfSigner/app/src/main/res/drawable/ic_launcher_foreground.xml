@@ -1,0 +1,32 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- White card background -->
+    <path
+        android:pathData="M24,16 L84,16 Q92,16 92,24 L92,84 Q92,92 84,92 L24,92 Q16,92 16,84 L16,24 Q16,16 24,16 Z"
+        android:fillColor="#FFFFFF"/>
+
+    <!-- Bold "P" outer shape -->
+    <path
+        android:pathData="M34,28 L34,80 L44,80 L44,60 L60,60 Q72,60 72,44 Q72,28 60,28 Z"
+        android:fillColor="#0F3460"/>
+
+    <!-- "P" counter (white cutout) -->
+    <path
+        android:pathData="M44,37 L58,37 Q62,37 62,44 Q62,51 58,51 L44,51 Z"
+        android:fillColor="#FFFFFF"/>
+
+    <!-- Pen nib accent (orange) -->
+    <path
+        android:pathData="M72,26 L84,26 L84,38 L78,44 L66,44 Z"
+        android:fillColor="#FF5722"/>
+
+    <!-- Nib tip shadow -->
+    <path
+        android:pathData="M78,44 L84,38 L84,44 Z"
+        android:fillColor="#E84C1E"/>
+
+</vector>

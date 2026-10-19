@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: file:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://*.cloudfunctions.net; worker-src 'self' blob:; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none';" />
+  <title>PDF Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- Auth Overlay (Login/Register) -->
+  <div id="authOverlay" class="auth-overlay">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-brand-dot"></div>
+        <h1>PDF Studio</h1>
+      </div>
+      <p class="auth-subtitle">Sign in to sync your data across devices</p>
+
+      <div class="panel-tabs auth-tabs">
+        <button class="panel-tab active" id="authShowLogin">Login</button>
+        <button class="panel-tab" id="authShowRegister">Register</button>
+      </div>
+
+      <div id="authError" class="auth-error" style="display:none;"></div>
+
+      <!-- Login Form -->
+      <div id="authLoginForm" class="auth-form">
+        <input id="authLoginEmail" type="email" placeholder="Email" autocomplete="email" />
+        <input id="authLoginPassword" type="password" placeholder="Password" autocomplete="current-password" />
+        <button id="authLoginBtn" class="btn-primary" style="width:100%;">Login</button>
+      </div>
+
+      <!-- Register Form -->
+      <div id="authRegisterForm" class="auth-form" style="display:none;">
+        <input id="authRegEmail" type="email" placeholder="Email" autocomplete="email" />
+        <input id="authRegPassword" type="password" placeholder="Password (min 12 chars)" autocomplete="new-password" />
+        <input id="authRegPasswordConfirm" type="password" placeholder="Confirm password" autocomplete="new-password" />
+        <button id="authRegisterBtn" class="btn-primary" style="width:100%;">Create Account</button>
+      </div>
+
+      <div class="auth-divider"><span>or</span></div>
+      <button id="authGuestBtn" class="auth-guest-btn">Continue as Guest (local only)</button>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <h1>PDF Studio</h1>
+      <!-- User info (shown when logged in) -->
+      <div id="sidebarUserInfo" class="sidebar-user-info" style="display:none;">
+        <span id="sidebarUserEmail" class="sidebar-user-email"></span>
+        <button id="sidebarLogoutBtn" class="btn-small sidebar-logout-btn">Logout</button>
+      </div>
+      <div class="sidebar-section-label">Workspace</div>
+      <button data-tab="home" class="tab-btn active">Home</button>
+      <button data-tab="sign" class="tab-btn">Sign</button>
+      <button data-tab="tools" class="tab-btn">Tools</button>
+      <button data-tab="viewer" class="tab-btn">Viewer</button>
+      <div class="sidebar-section-label">Collaborate</div>
+      <button data-tab="remote" class="tab-btn">Remote Sign</button>
+      <div class="sidebar-section-label">System</div>
+      <button data-tab="settings" class="tab-btn">Settings</button>
+    </aside>
+
+    <main class="content">
+      <section id="home" class="tab active">
+        <div class="home-hero">
+          <div class="home-hero-copy">
+            <div class="home-kicker">Desktop Document Studio</div>
+            <h2>Open, edit, sign, protect, and send documents from one workspace</h2>
+            <p>PDF Studio now handles PDFs, images, text-based files, protected envelopes, and raw binary files from the same desktop flow.</p>
+            <div class="row" style="flex-shrink:0;margin-bottom:0;">
+              <button id="btnOpenPdf" class="btn-primary">Open PDF</button>
+              <button id="btnOpenAny">Open Any File</button>
+              <button id="btnScanImport">Import Scan</button>
+            </div>
+          </div>
+          <div class="home-hero-panel">
+            <div class="home-stat-grid">
+              <div class="home-stat-card"><strong>PDF</strong><span>Sign, watermark, protect, audit</span></div>
+              <div class="home-stat-card"><strong>Remote</strong><span>Share links, QR, email return flow</span></div>
+              <div class="home-stat-card"><strong>Viewer</strong><span>Text editor, image preview, binary hex mode</span></div>
+              <div class="home-stat-card"><strong>Ready</strong><span>Desktop build and Android APK verified</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="home-quick-grid">
+          <button class="home-quick-card" data-home-tab="sign">
+            <strong>Prepare a signature</strong>
+            <span>Open a PDF, place signatures and export in PDF, PNG, or JPG.</span>
+          </button>
+          <button class="home-quick-card" data-home-tab="tools">
+            <strong>Run PDF tools</strong>
+            <span>Merge, split, extract, compress, watermark, protect, unlock, and audit.</span>
+          </button>
+          <button class="home-quick-card" data-home-tab="viewer">
+            <strong>Inspect any file</strong>
+            <span>Open text files directly and binary files in a built-in hex editor.</span>
+          </button>
+          <button class="home-quick-card" data-home-tab="remote">
+            <strong>Send for remote signing</strong>
+            <span>Create a link, share the QR code, and track the signing status.</span>
+          </button>
+        </div>
+        <h3 style="color:var(--muted);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:var(--s3) 0 var(--s2);flex-shrink:0;">Recent Files</h3>
+        <ul id="recentFiles" class="list"></ul>
+      </section>
+
+      <section id="sign" class="tab">
+        <h2 style="margin-bottom:var(--s2);flex-shrink:0;font-size:.95rem;">Sign PDF</h2>
+
+        <!-- Step progress indicator (direction:ltr ensures forward order even in RTL mode) -->
+        <div class="step-indicator" style="direction:ltr;flex-shrink:0;">
+          <div class="step-ind-item" data-step="0" id="stepLoad">
+            <div class="step-ind-num">1</div><div class="step-ind-label">Open</div>
+          </div>
+          <div class="step-ind-connector"></div>
+          <div class="step-ind-item" data-step="1" id="stepSign">
+            <div class="step-ind-num">2</div><div class="step-ind-label">Sign</div>
+          </div>
+          <div class="step-ind-connector"></div>
+          <div class="step-ind-item" data-step="2" id="stepPlace">
+            <div class="step-ind-num">3</div><div class="step-ind-label">Place</div>
+          </div>
+          <div class="step-ind-connector"></div>
+          <div class="step-ind-item" data-step="3" id="stepExport">
+            <div class="step-ind-num">4</div><div class="step-ind-label">Export</div>
+          </div>
+        </div>
+
+        <div class="canvas-grid">
+          <!-- LEFT column: PDF viewer -->
+          <div class="sign-pdf-col">
+            <!-- Toolbar -->
+            <div class="sign-pdf-toolbar">
+              <button id="btnOpenPdfSign" class="btn-primary btn-sm">📂 Open PDF</button>
+              <div style="flex:1;"></div>
+              <button id="btnPrevPage" class="nav-btn">◀</button>
+              <span id="pageLabel" class="page-label">Page 0 / 0</span>
+              <button id="btnNextPage" class="nav-btn">▶</button>
+            </div>
+
+            <!-- PDF canvas with empty-state overlay -->
+            <div id="pdfContainer" class="pdf-container" style="position:relative;flex:1;min-height:0;">
+              <canvas id="pdfCanvas"></canvas>
+              <canvas id="overlayCanvas"></canvas>
+              <div id="pdfEmptyState" class="pdf-empty-state">
+                <div class="pes-icon">📄</div>
+                <div class="pes-title">No document open</div>
+                <div class="pes-sub">Click "Open PDF" to load a document</div>
+              </div>
+            </div>
+
+            <!-- Reading mode + action chips -->
+            <div style="margin-top:var(--s2);display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
+              <div class="chip-row">
+                <button class="chip active" id="btnModeNormal" data-mode="normal">Normal</button>
+                <button class="chip" id="btnModeSepia"  data-mode="sepia">Sepia</button>
+                <button class="chip" id="btnModeWarm"   data-mode="warm">Warm</button>
+                <button class="chip" id="btnModeCool"   data-mode="cool">Cool</button>
+                <button class="chip" id="btnModeNight"  data-mode="night">Night</button>
+              </div>
+              <div class="chip-row">
+                <button class="chip" id="btnAutoDate">📅 Auto Date</button>
+                <button class="chip" id="btnVisualStamp">🔖 Stamp</button>
+              </div>
+            </div>
+
+            <!-- Visual stamp presets panel -->
+            <div id="visualStampPanel" class="stamp-panel" style="display:none;margin-top:var(--s2);flex-shrink:0;">
+              <div class="stamp-preset-grid">
+                <button class="stamp-preset approved"     data-text="APPROVED"     data-color="#16a34a">APPROVED</button>
+                <button class="stamp-preset confidential" data-text="CONFIDENTIAL" data-color="#dc2626">CONFIDENTIAL</button>
+                <button class="stamp-preset draft"        data-text="DRAFT"        data-color="#2563eb">DRAFT</button>
+                <button class="stamp-preset final"        data-text="FINAL"        data-color="#059669">FINAL</button>
+                <button class="stamp-preset copy"         data-text="COPY"         data-color="#7c3aed">COPY</button>
+                <button class="stamp-preset void"         data-text="VOID"         data-color="#dc2626">VOID</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT column: Signature + Text stamps + Export -->
+          <div class="sign-right-panel">
+
+            <!-- ── Signature section card ── -->
+            <div class="sign-section-card">
+              <div class="sign-section-header">
+                <span class="sign-section-icon">✍️</span>
+                <span class="sign-section-label">Signature</span>
+                <div class="panel-tabs" style="margin:0;flex:1;max-width:155px;">
+                  <button class="panel-tab active" id="tabDraw" data-sig-tab="draw">Draw</button>
+                  <button class="panel-tab" id="tabSaved" data-sig-tab="saved">Saved</button>
+                </div>
+              </div>
+
+              <!-- Draw tab -->
+              <div id="sigDrawPanel">
+                <div class="sig-controls">
+                  <div class="color-swatches" id="sigColorSwatches">
+                    <div class="color-swatch active" data-color="#000000" style="background:#000000" title="Black"></div>
+                    <div class="color-swatch" data-color="#1a3a6b" style="background:#1a3a6b" title="Navy"></div>
+                    <div class="color-swatch" data-color="#dc2626" style="background:#dc2626" title="Red"></div>
+                    <div class="color-swatch" data-color="#16a34a" style="background:#16a34a" title="Green"></div>
+                  </div>
+                  <div class="thickness-control">
+                    <span>Thick</span>
+                    <input type="range" id="sigThickness" min="1" max="8" value="3" style="width:70px;" />
+                    <canvas id="thicknessPreview" width="20" height="20" style="border-radius:50%;background:var(--surface-1);flex-shrink:0;"></canvas>
+                  </div>
+                </div>
+
+                <div class="sig-canvas-wrap">
+                  <canvas id="sigCanvas" width="420" height="160" class="sig-canvas"></canvas>
+                  <div class="sig-canvas-hint">✏ Draw your signature here</div>
+                </div>
+
+                <div class="sig-actions-row">
+                  <button id="btnSigUndo" class="btn-sm">↩ Undo</button>
+                  <button id="btnSigClear" class="btn-sm">✕ Clear</button>
+                  <button id="btnSigSave" class="btn-primary btn-sm" style="margin-inline-start:auto;">💾 Save</button>
+                </div>
+              </div>
+
+              <!-- Saved tab -->
+              <div id="sigSavedPanel" style="display:none;">
+                <div id="savedSignatures" class="saved-grid"></div>
+                <p style="font-size:.7rem;color:var(--muted);margin:var(--s2) 0 0;text-align:center;">Click a signature to load it, then drag it onto the PDF</p>
+              </div>
+            </div>
+
+            <!-- ── Text Stamps section card ── -->
+            <div class="sign-section-card">
+              <div class="sign-section-header">
+                <span class="sign-section-icon">📝</span>
+                <span class="sign-section-label">Text Stamps</span>
+              </div>
+              <div style="display:flex;gap:var(--s2);align-items:center;">
+                <input id="textStampInput" type="text" placeholder="e.g. Approved, Reviewed…" style="flex:1;min-width:0;" />
+                <button id="btnAddTextStamp" class="btn-primary btn-sm">+ Add</button>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--s3);flex-wrap:wrap;margin-top:var(--s1);">
+                <div class="ts-size-chips">
+                  <button class="ts-size-chip active" data-size="14">S</button>
+                  <button class="ts-size-chip" data-size="20">M</button>
+                  <button class="ts-size-chip" data-size="28">L</button>
+                  <button class="ts-size-chip" data-size="36">XL</button>
+                </div>
+                <div class="color-swatches" id="tsColorSwatches">
+                  <div class="color-swatch active" data-color="#000000" style="background:#000000"></div>
+                  <div class="color-swatch" data-color="#2563eb" style="background:#2563eb"></div>
+                  <div class="color-swatch" data-color="#dc2626" style="background:#dc2626"></div>
+                  <div class="color-swatch" data-color="#16a34a" style="background:#16a34a"></div>
+                  <div class="color-swatch" data-color="#7c3aed" style="background:#7c3aed"></div>
+                  <div class="color-swatch" data-color="#f59e0b" style="background:#f59e0b"></div>
+                </div>
+              </div>
+              <div id="textStampList" class="ts-list"></div>
+            </div>
+
+            <!-- ── Export section card ── -->
+            <div class="sign-section-card sign-export-card">
+              <div class="sign-section-header">
+                <span class="sign-section-icon">📤</span>
+                <span class="sign-section-label">Export Signed Document</span>
+              </div>
+              <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:var(--s2);">
+                <button id="btnExportPdf" class="btn-primary">⬇ Save PDF</button>
+                <button id="btnExportPng">PNG</button>
+                <button id="btnExportJpg">JPG</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tools" class="tab">
+        <h2 style="margin-bottom:var(--s2);flex-shrink:0;font-size:.95rem;">PDF Tools</h2>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h3><span class="tc-icon">📎</span> Merge PDFs</h3>
+            <p class="tool-desc">Combine multiple PDF files into one document</p>
+            <input id="mergeInput" type="file" accept="application/pdf" multiple />
+            <button id="btnMerge" class="btn-primary tool-action">Run Merge</button>
+          </div>
+          <div class="tool-card">
+            <h3><span class="tc-icon">✂️</span> Split PDF</h3>
+            <p class="tool-desc">Extract specific pages or split into separate files</p>
+            <input id="splitInput" type="file" accept="application/pdf" />
+            <input id="splitPages" type="text" placeholder="Pages: 1,3,5 (blank = all)" />
+            <button id="btnSplit" class="btn-primary tool-action">Run Split</button>
+          </div>
+          <div class="tool-card">
+            <h3><span class="tc-icon">📄</span> Extract Page</h3>
+            <p class="tool-desc">Save a single page as a new PDF file</p>
+            <input id="extractInput" type="file" accept="application/pdf" />
+            <input id="extractPage" type="number" min="1" value="1" placeholder="Page number" />
+            <button id="btnExtract" class="btn-primary tool-action">Extract</button>
+          </div>
+          <div class="tool-card">
+            <h3><span class="tc-icon">📝</span> PDF → Text</h3>
+            <p class="tool-desc">Extract all text content from a PDF file</p>
+            <input id="convertInput" type="file" accept="application/pdf" />
+            <button id="btnConvert" class="btn-primary tool-action">Convert to Text</button>
+          </div>
+          <div class="tool-card tool-card-wide">
+            <h3><span class="tc-icon">💧</span> Watermark</h3>
+            <p class="tool-desc">Add a text watermark (diagonal or corner)</p>
+            <input id="watermarkInput" type="file" accept="application/pdf" />
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);align-items:start;">
+              <div style="display:flex;flex-direction:column;gap:var(--s1);">
+                <div class="chip-row" style="flex-wrap:wrap;gap:3px;">
+                  <button class="chip wm-preset" data-text="DRAFT">Draft</button>
+                  <button class="chip wm-preset" data-text="CONFIDENTIAL">Conf.</button>
+                  <button class="chip wm-preset" data-text="INTERNAL">Internal</button>
+                  <button class="chip wm-preset" data-text="COPY">Copy</button>
+                </div>
+                <input id="watermarkText" type="text" placeholder="Custom text…" />
+              </div>
+              <div style="display:flex;flex-direction:column;gap:var(--s1);">
+                <select id="watermarkType">
+                  <option value="text">Diagonal</option>
+                  <option value="corner-tl">Top-Left</option>
+                  <option value="corner-tr">Top-Right</option>
+                  <option value="corner-bl">Bot-Left</option>
+                  <option value="corner-br">Bot-Right</option>
+                </select>
+                <div style="display:flex;align-items:center;gap:4px;">
+                  <label class="field-label" style="white-space:nowrap;flex-shrink:0;">Opacity</label>
+                  <input id="watermarkOpacity" type="range" min="0.05" max="1" step="0.05" value="0.3" style="flex:1;" />
+                </div>
+              </div>
+            </div>
+            <button id="btnWatermark" class="btn-primary tool-action">Apply Watermark</button>
+          </div>
+          <div class="tool-card">
+            <h3><span class="tc-icon">📦</span> Compress</h3>
+            <p class="tool-desc">Reduce PDF file size by adjusting quality</p>
+            <input id="compressInput" type="file" accept="application/pdf" />
+            <div style="display:flex;align-items:center;gap:6px;">
+              <label class="field-label" style="white-space:nowrap;">Quality: <span id="compressQualityLabel">70%</span></label>
+              <input id="compressQuality" type="range" min="10" max="100" step="5" value="70" style="flex:1;" />
+            </div>
+            <button id="btnCompress" class="btn-primary tool-action">Compress</button>
+          </div>
+          <div class="tool-card">
+            <h3><span class="tc-icon">🔒</span> Password Protect</h3>
+            <p class="tool-desc">Encrypt the PDF with a password</p>
+            <input id="protectInput" type="file" accept="application/pdf" />
+            <input id="protectPassword" type="password" placeholder="Enter password" />
+            <button id="btnProtect" class="btn-primary tool-action">Protect</button>
+          </div>
+          <div class="tool-card">
+            <h3><span class="tc-icon">🔓</span> Open Protected</h3>
+            <p class="tool-desc">Unlock a .pdfs envelope and restore the original PDF</p>
+            <input id="unprotectInput" type="file" accept=".pdfs,application/json" />
+            <input id="unprotectPassword" type="password" placeholder="Enter password" />
+            <button id="btnUnprotect" class="btn-primary tool-action">Unlock PDF</button>
+          </div>
+          <div class="tool-card tool-card-wide">
+            <h3><span class="tc-icon">📋</span> Audit Trail</h3>
+            <p class="tool-desc">Embed a signed audit record into the PDF</p>
+            <input id="auditInput" type="file" accept="application/pdf" />
+            <input id="auditSigner" type="text" placeholder="Signer / reviewer name" />
+            <button id="btnAudit" class="btn-primary tool-action">Add Audit</button>
+          </div>
+          <div class="tool-card-spacer"></div>
+        </div>
+      </section>
+
+      <section id="viewer" class="tab">
+        <h2 style="margin-bottom:var(--s2);flex-shrink:0;font-size:.95rem;">Document Viewer</h2>
+        <div class="row" style="margin-bottom:8px;flex-wrap:wrap;gap:8px;flex-shrink:0;">
+          <button id="btnOpenAnyViewer" class="btn-primary">Open File</button>
+          <button id="btnViewerZoomOut">Zoom -</button>
+          <button id="btnViewerZoomIn">Zoom +</button>
+          <button id="btnPdfStats">PDF Stats</button>
+          <button id="btnQrStamp">QR Stamp</button>
+          <select id="viewerReadingMode" style="flex:1;max-width:160px;">
+            <option value="normal">Normal</option>
+            <option value="sepia">Sepia</option>
+            <option value="warm">Warm</option>
+            <option value="cool">Cool</option>
+            <option value="night">Night</option>
+          </select>
+        </div>
+        <div id="viewerInfo" style="font-size:.85rem;color:var(--muted);margin-bottom:8px;"></div>
+        <div id="viewerTextWrap" class="viewer-text-wrap" style="display:none;">
+          <div class="viewer-text-toolbar">
+            <span id="viewerTextMeta" class="small"></span>
+            <button id="btnSaveTextFile" class="btn-primary btn-small">Save Changes</button>
+          </div>
+          <textarea id="viewerTextEditor" class="viewer-text-editor" spellcheck="false" placeholder="Open a text-based file to view or edit it here."></textarea>
+        </div>
+        <!-- Stats sheet (hidden by default) -->
+        <div id="pdfStatsPanel" class="stats-panel" style="display:none;"></div>
+        <!-- Reading mode filter canvas wrapper -->
+        <div id="viewerCanvasWrap" style="position:relative;width:fit-content;flex:1;min-height:0;overflow:hidden;">
+          <canvas id="viewerCanvas" style="display:block;max-height:100%;object-fit:contain;"></canvas>
+          <div id="viewerReadingOverlay" style="position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;"></div>
+        </div>
+      </section>
+
+      <section id="remote" class="tab">
+
+        <!-- Header + inline status bar -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s3);flex-shrink:0;">
+          <h2 style="margin:0;">שליחה לחתימה מרחוק</h2>
+          <div id="serverStatusCard" style="display:flex;align-items:center;gap:var(--s2);">
+            <span id="serverDot" class="status-dot" style="width:8px;height:8px;border-radius:50%;background:var(--faint);display:inline-block;flex-shrink:0;transition:background .3s;"></span>
+            <span id="serverStatusText" style="font-size:.82rem;color:var(--muted);">בודק שרת…</span>
+            <button id="btnStartTunnel" class="btn-small btn-primary-sm">הפעל גישה ציבורית</button>
+            <button id="btnStopTunnel"  class="btn-small" style="display:none;">עצור מנהרה</button>
+          </div>
+        </div>
+
+        <!-- Two-column layout: form | result + history -->
+        <div style="display:grid;grid-template-columns:1fr 0.85fr;gap:var(--s4);align-items:start;flex:1;min-height:0;overflow:hidden;">
+
+          <!-- Left: create session form -->
+          <div class="tool-card" style="gap:var(--s2);overflow-y:auto;max-height:100%;">
+            <h3 style="margin-bottom:var(--s1);">שלח מסמך לחתימה</h3>
+
+            <label class="field-label">קובץ PDF *</label>
+            <input id="remoteDoc" type="file" accept="application/pdf" />
+
+            <label class="field-label">אימייל חותם *</label>
+            <input id="remoteEmail" type="email" placeholder="client@example.com" />
+
+            <!-- Delivery channel -->
+            <label class="field-label">שליחת קישור אוטומטית</label>
+            <div class="panel-tabs" id="deliveryTabs" style="margin-bottom:0;">
+              <button class="panel-tab active" data-channel="email">מייל</button>
+              <button class="panel-tab" data-channel="whatsapp">WhatsApp</button>
+              <button class="panel-tab" data-channel="sms">SMS</button>
+              <button class="panel-tab" data-channel="none">ידנית</button>
+            </div>
+              <div id="remoteDeliveryHint" class="small" style="padding:10px 12px;border-radius:var(--r3);background:var(--surface-1);border:1px solid var(--border);">מסירת מייל אוטומטית דורשת SMTP פעיל וקישור ציבורי.</div>
+            <input id="remotePhone" type="tel" placeholder="+972501234567" style="display:none;" />
+
+            <!-- Sender name + email side by side -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);">
+              <div>
+                <label class="field-label">שמך (השולח)</label>
+                <input id="remoteSenderName" type="text" placeholder="שם החברה / שמך" style="width:100%;margin-top:4px;" />
+              </div>
+              <div>
+                <label class="field-label">האימייל שלך</label>
+                <input id="remoteSenderEmail" type="email" placeholder="you@company.com" style="width:100%;margin-top:4px;" />
+              </div>
+            </div>
+
+            <label class="field-label">הודעה ללקוח</label>
+            <input id="remoteMessage" type="text" placeholder="נא לחתום על החוזה המצורף..." />
+
+            <!-- SMTP (collapsed) -->
+            <details>
+              <summary>הגדרות מייל (SMTP)</summary>
+              <div style="padding-top:8px;display:flex;flex-direction:column;gap:6px;">
+                <input id="smtpHost"     class="small-input" type="text"     placeholder="smtp.gmail.com" />
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <input id="smtpPort"   class="small-input" type="number"   placeholder="465" value="465" style="width:80px;" />
+                  <label style="font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap=5px;white-space:nowrap;">
+                    <input id="smtpSecure" type="checkbox" checked /> SSL/TLS
+                  <div class="color-swatches" id="watermarkColorSwatches">
+                    <div class="color-swatch active" data-color="#999999" style="background:#999999" title="Gray"></div>
+                    <div class="color-swatch" data-color="#dc2626" style="background:#dc2626" title="Red"></div>
+                    <div class="color-swatch" data-color="#2563eb" style="background:#2563eb" title="Blue"></div>
+                    <div class="color-swatch" data-color="#16a34a" style="background:#16a34a" title="Green"></div>
+                    <div class="color-swatch" data-color="#111827" style="background:#111827" title="Charcoal"></div>
+                  </div>
+                  </label>
+                </div>
+                <input id="smtpUser"     class="small-input" type="email"    placeholder="user@gmail.com" />
+                <input id="smtpPass"     class="small-input" type="password" placeholder="App password" />
+              </div>
+            </details>
+
+            <button id="btnCreateSession" class="btn-primary" style="margin-top:var(--s1);">צור קישור חתימה</button>
+          </div>
+
+          <!-- Right column: result card + session history -->
+          <div style="display:flex;flex-direction:column;gap:var(--s3);overflow-y:auto;max-height:100%;">
+
+            <!-- Result card (hidden until session created) -->
+            <div class="tool-card" id="sessionResultCard" style="display:none;gap:var(--s2);">
+              <div class="remote-result-head">
+                <div>
+                  <h3 style="margin:0;">קישור חתימה מוכן</h3>
+                  <div class="small">שלח ללקוח את הקישור או את קוד ה־QR כדי להשלים חתימה מרחוק.</div>
+                </div>
+                <span id="remoteFieldCount" class="remote-pill">0 שדות</span>
+              </div>
+              <div class="remote-result-grid">
+                <div class="remote-qr-card">
+                  <canvas id="remoteQr" width="180" height="180"></canvas>
+                </div>
+                <div class="remote-link-stack">
+                  <label class="field-label" for="remoteLink">קישור חתימה</label>
+                  <div id="remoteLink" class="remote-link-box"></div>
+                  <div class="row" style="margin-bottom:0;">
+                    <button id="btnCopyLink" class="btn-primary">העתק קישור</button>
+                    <button id="btnOpenLink" class="btn-ghost">פתח בדפדפן</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Session history -->
+            <div class="tool-card" style="gap:var(--s2);">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <h3 style="margin:0;">היסטוריית בקשות</h3>
+                <button id="btnRefreshSessions" class="btn-small">רענן</button>
+              </div>
+              <div id="sessionHistory" class="session-list" style="max-height:280px;overflow-y:auto;"></div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <section id="settings" class="tab">
+        <h2 style="margin-bottom:var(--s2);flex-shrink:0;font-size:.95rem;">Settings</h2>
+        <div class="settings-grid">
+          <div class="settings-section">
+            <div class="settings-section-title">Appearance</div>
+            <div class="settings-row">
+              <label class="settings-label">Theme</label>
+              <select id="themeSelect" class="settings-select">
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </div>
+            <div class="settings-row">
+              <label class="settings-label">Language</label>
+              <select id="langSelect" class="settings-select">
+                <option value="en">English</option>
+                <option value="he">עברית</option>
+              </select>
+            </div>
+            <div class="settings-row">
+              <label class="settings-label">Font scale</label>
+              <select id="fontScaleSelect" class="settings-select">
+                <option value="0">Default</option>
+                <option value="1">Large</option>
+                <option value="2">XL</option>
+              </select>
+            </div>
+          </div>
+          <div class="settings-section">
+            <div class="settings-section-title">Accessibility</div>
+            <div class="settings-row">
+              <label class="settings-label">High Contrast</label>
+              <label class="toggle-switch">
+                <input type="checkbox" id="highContrastToggle" />
+                <span class="toggle-thumb"></span>
+              </label>
+            </div>
+          </div>
+          <div class="settings-section">
+            <div class="settings-section-title">About</div>
+            <div class="settings-row">
+              <span class="settings-label">PDF Studio Desktop</span>
+              <span style="font-size:.8rem;color:var(--muted);">v1.0.0</span>
+            </div>
+            <div class="settings-row">
+              <span class="settings-label">Export folder</span>
+              <button id="btnOpenExportFolder" class="btn-sm">Open folder</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast"></div>
+  <div id="statusBar" aria-live="polite"></div>
+  <script src="../node_modules/pdf-lib/dist/pdf-lib.min.js"></script>
+  <script src="../node_modules/pdfjs-dist/build/pdf.min.js"></script>
+  <script src="./core/pure.js"></script>
+  <script src="./core/workers.js"></script>
+  <script src="./features/auth.js"></script>
+  <script src="./features/remote.js"></script>
+  <script src="./features/wizard.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

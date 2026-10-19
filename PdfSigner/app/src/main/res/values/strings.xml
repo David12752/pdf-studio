@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PDF Studio</string>
+    <string name="home_title">PDF Studio</string>
+    <string name="select_pdf_title">Select a PDF to sign</string>
+    <string name="select_pdf_desc">Open a PDF from your device, draw your signature,\nplace it on the page, and export.</string>
+    <string name="open_pdf_button">Open PDF</string>
+    <string name="place_signature_title">Place Signature</string>
+    <string name="previous_page">Previous page</string>
+    <string name="next_page">Next page</string>
+    <string name="page_x_of_y">Page %1$d of %2$d</string>
+    <string name="confirm_placement">Confirm &amp; Export</string>
+    <string name="draw_signature_title">Draw your signature</string>
+    <string name="undo">Undo</string>
+    <string name="clear">Clear</string>
+    <string name="use">Use</string>
+    <string name="cancel">Cancel</string>
+    <string name="export_title">Export Signed Document</string>
+    <string name="exporting_wait">Exporting, please wait...</string>
+    <string name="choose_export_format">Choose an export format</string>
+    <string name="export_desc">The signed file will be saved to your device.</string>
+    <string name="save_as_pdf">Save as PDF</string>
+    <string name="save_as_pdf_desc">Original PDF with embedded signature</string>
+    <string name="save_as_png">Save as PNG</string>
+    <string name="save_as_png_desc">High-quality image with transparent background</string>
+    <string name="save_as_jpg">Save as JPG</string>
+    <string name="save_as_jpg_desc">Compressed image - smaller file size</string>
+    <string name="start_over">Start Over</string>
+    <string name="saved_success">Saved successfully!</string>
+    <string name="saved_to_downloads">PDF saved to Downloads folder</string>
+    <string name="saved_to_pictures_png">PNG saved to Pictures folder</string>
+    <string name="saved_to_pictures_jpg">JPG saved to Pictures folder</string>
+    <string name="share">Share</string>
+    <string name="export_failed">Export failed</string>
+    <string name="pick_save_location">Pick save location</string>
+    <string name="language_settings">Language</string>
+    <string name="change_language">Change Language</string>
+    <string name="drag_signature_hint">Drag to move · corner to resize</string>
+    <string name="resize_signature_hint">Blue corner = resize handle</string>
+    <string name="scan_document_button">Scan Document</string>
+    <string name="pdf_preview_desc">PDF preview</string>
+    <string name="ink_color_label">Ink color</string>
+    <string name="color_black">Black</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_red">Red</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_tools">Tools</string>
+    <string name="nav_recent">Recent</string>
+
+    <!-- PDF Tools -->
+    <string name="pdf_tools_button">PDF Tools</string>
+    <string name="pdf_tools_title">PDF Tools</string>
+    <string name="merge_pdfs">Merge PDFs</string>
+    <string name="merge_pdfs_desc">Combine multiple PDFs into one file</string>
+    <string name="split_pdf">Split PDF</string>
+    <string name="split_pdf_desc">Split a PDF into separate pages</string>
+    <string name="extract_page">Extract Page</string>
+    <string name="extract_page_desc">Save a single page as a new PDF</string>
+    <string name="add_pdf">Add PDF</string>
+    <string name="remove">Remove</string>
+    <string name="merge_button">Merge</string>
+    <string name="split_button">Split</string>
+    <string name="extract_button">Extract</string>
+    <string name="processing">Processing…</string>
+    <string name="select_page_to_extract">Select page to extract: %1$d</string>
+    <string name="result_saved">Result saved to Downloads</string>
+    <string name="pdf_tools_error">Operation failed</string>
+    <string name="files_selected">%1$d file(s) selected</string>
+    <string name="no_files_selected">No files selected</string>
+
+    <!-- PDF to Word -->
+    <string name="convert_to_word">PDF to Text</string>
+    <string name="convert_to_word_desc">Extract text from PDF into a .txt document</string>
+    <string name="convert_button">Convert</string>
+    <string name="convert_result_saved">Text file saved to Downloads</string>
+    <string name="converting">Converting…</string>
+
+    <!-- Watermark -->
+    <string name="watermark">Watermark</string>
+    <string name="watermark_desc">Add a diagonal text watermark to every page</string>
+    <string name="watermark_text_label">Watermark text</string>
+    <string name="watermark_opacity_label">Opacity: %1$d%%</string>
+    <string name="watermark_button">Apply Watermark</string>
+    <string name="watermark_presets">Presets:</string>
+    <string name="watermark_draft">DRAFT</string>
+    <string name="watermark_confidential">CONFIDENTIAL</string>
+    <string name="watermark_internal">INTERNAL USE</string>
+
+    <!-- Compression -->
+    <string name="compress_pdf">Compress</string>
+    <string name="compress_pdf_desc">Reduce PDF file size for sharing</string>
+    <string name="compress_quality_label">Quality: %1$d%%</string>
+    <string name="compress_button">Compress</string>
+
+    <!-- Password Protection -->
+    <string name="protect_pdf">Password</string>
+    <string name="protect_pdf_desc">Encrypt PDF with a password</string>
+    <string name="protect_password_label">Password (min 4 chars)</string>
+    <string name="protect_button">Protect</string>
+
+    <!-- Audit Trail -->
+    <string name="audit_trail">Audit Trail</string>
+    <string name="audit_trail_desc">Add a signing audit page with timestamp &amp; device info</string>
+    <string name="audit_signer_label">Signer name</string>
+    <string name="audit_button">Add Audit Page</string>
+
+    <!-- Auto-date -->
+    <string name="auto_date_button">Add Date</string>
+    <string name="auto_date_added">Date stamp added</string>
+
+    <!-- Visual stamps -->
+    <string name="visual_stamp_title">Add Stamp</string>
+    <string name="stamp_approved">APPROVED</string>
+    <string name="stamp_confidential">CONFIDENTIAL</string>
+    <string name="stamp_draft">DRAFT</string>
+    <string name="stamp_final">FINAL</string>
+    <string name="stamp_copy">COPY</string>
+    <string name="stamp_void">VOID</string>
+    <string name="stamp_added">Stamp added</string>
+
+    <!-- Biometric -->
+    <string name="biometric_prompt_title">Authenticate to Sign</string>
+    <string name="biometric_prompt_subtitle">Verify your identity before signing</string>
+    <string name="biometric_negative_button">Cancel</string>
+    <string name="biometric_not_available">Biometric authentication is not available on this device</string>
+    <string name="biometric_required">Authentication required before signing</string>
+
+    <!-- Tools tab labels (short) -->
+    <string name="tab_edit">Edit</string>
+    <string name="tab_secure">Secure</string>
+    <string name="tab_more">More</string>
+    
+    <!-- Signature drawing -->
+    <string name="quick_actions">Quick Actions</string>
+    <string name="pen_thickness_label">Pen thickness: %1$d</string>
+    <string name="save_signature">Save signature</string>
+    <string name="saved_signatures_title">Saved Signatures</string>
+    <string name="saved_signatures_empty">No saved signatures yet</string>
+    <string name="use_saved_signature">Use this signature</string>
+    <string name="delete_saved_signature">Delete</string>
+    <string name="draw_tab">Draw</string>
+    <string name="saved_tab">Saved</string>
+    <string name="signature_saved_toast">Signature saved!</string>
+    <string name="sign_here">Sign here</string>
+
+    <!-- Recent files -->
+    <string name="recent_files_title">Recent</string>
+    <string name="no_recent_files">No recent files</string>
+    <string name="remove_recent">Remove from recent</string>
+    <string name="pages_count">%1$d pages</string>
+
+    <!-- Step indicator -->
+    <string name="step_open">Open</string>
+    <string name="step_sign">Sign</string>
+    <string name="step_place">Place</string>
+    <string name="step_export">Export</string>
+
+    <!-- Folder links -->
+    <string name="open_downloads_folder">Open Downloads</string>
+    <string name="open_pictures_folder">Open Pictures</string>
+    <string name="open_folder">Open Folder</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_subtitle">Preferences &amp; Accessibility</string>
+    <string name="settings_section_appearance">Appearance</string>
+    <string name="settings_section_accessibility">Accessibility</string>
+    <string name="settings_section_about">About</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_font_size">Text Size</string>
+    <string name="settings_high_contrast">High Contrast</string>
+    <string name="settings_high_contrast_desc">Increases text and border contrast</string>
+    <string name="settings_haptics">Haptic Feedback</string>
+    <string name="settings_haptics_desc">Vibrate on important actions</string>
+    <string name="settings_version">App Version</string>
+    <string name="settings_build">Build Number</string>
+    <string name="settings_privacy">Privacy Policy</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="font_default">Default</string>
+    <string name="font_large">Large</string>
+    <string name="font_xl">Extra Large</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="nav_sign">Sign</string>
+    <string name="nav_sign_remote">Remote Sign</string>
+    <string name="home_subtitle">PDF · Sign · Export</string>
+    <string name="error_pdf_password">This PDF is password-protected and cannot be opened.</string>
+    <string name="error_pdf_encrypted">This PDF is encrypted and cannot be opened.</string>
+    <string name="error_pdf_load">Failed to load PDF: %1$s</string>
+    <string name="scanner_unavailable">Scanner unavailable: %1$s</string>
+    <string name="scanner_permission_denied">Camera permission is required to scan documents.</string>
+
+    <!-- Scan enhancement -->
+    <string name="scan_enhance_title">Enhance Scan</string>
+    <string name="scan_mode_color">Color</string>
+    <string name="scan_mode_grayscale">Grayscale</string>
+    <string name="scan_mode_bw">Black &amp; White</string>
+    <string name="scan_contrast_label">Contrast</string>
+    <string name="scan_brightness_label">Brightness</string>
+    <string name="scan_sharpness_label">Sharpness</string>
+    <string name="apply_and_continue">Apply &amp; Continue</string>
+
+    <!-- Text stamp -->
+    <string name="text_stamp_title">Add Text</string>
+    <string name="text_stamp_hint">Type your text…</string>
+    <string name="text_stamp_font_size">Font size: %1$d pt</string>
+    <string name="text_stamp_bold">Bold</string>
+    <string name="text_stamp_color_label">Text color</string>
+    <string name="text_stamp_add_button">Place on Document</string>
+    <string name="text_stamp_drag_hint">Drag text to reposition</string>
+    <string name="text_stamp_added">Text stamp added</string>
+    <string name="text_stamp_empty_error">Please enter text first</string>
+    <string name="text_stamps_count">%1$d text stamp(s) added</string>
+    <string name="remove_stamp">Remove stamp %1$d</string>
+    <string name="add_text_button">Add Text</string>
+    <string name="text_stamp_tap_hint">Tap the document to place text</string>
+
+    <!-- PDF Picker -->
+    <string name="search_pdfs">Search PDFs…</string>
+    <string name="scanning_device">Scanning device for PDFs…</string>
+    <string name="no_pdfs_on_device">No PDF files found on this device</string>
+    <string name="no_pdf_found_query">No PDFs matching "%1$s"</string>
+    <string name="pdf_count">%1$d files</string>
+    <string name="loading_previews">Loading previews…</string>
+    <string name="browse_files">Browse Files</string>
+    <string name="refresh">Refresh</string>
+    <string name="pick_pdf_to_sign">Choose PDF to Sign</string>
+    <string name="pick_pdf_for_tools">Choose PDF</string>
+
+    <!-- File Opener -->
+    <string name="open_file">Open File</string>
+    <string name="open_file_desc">Open Excel, Word, PowerPoint, images and more</string>
+    <string name="open_file_button">Open File</string>
+    <string name="file_type_excel">Excel Spreadsheet</string>
+    <string name="file_type_word">Word Document</string>
+    <string name="file_type_powerpoint">PowerPoint Presentation</string>
+    <string name="file_type_image">Image File</string>
+    <string name="file_type_text">Text File</string>
+    <string name="file_type_any">Any File</string>
+    <string name="file_opened_success">File opened successfully</string>
+    <string name="file_open_failed">Could not open this file. No suitable app found.</string>
+    <string name="choose_file_type">Choose file type to open</string>
+    <string name="open_with">Open with…</string>
+
+    <!-- Document Viewer -->
+    <string name="viewer_no_preview">Preview not available for this file type</string>
+    <string name="viewer_open_external">Open in app</string>
+    <string name="viewer_fit">Fit</string>
+    <string name="viewer_edit">Edit</string>
+    <string name="viewer_sign">Sign</string>
+    <string name="viewer_info">Info</string>
+    <string name="viewer_page_label">Page</string>
+
+    <!-- Document Viewer — new unique features -->
+    <string name="viewer_reading_mode">Reading Mode</string>
+    <string name="viewer_qr_stamp">QR Verify</string>
+    <string name="viewer_qr_done">QR Verification page saved to Downloads ✓</string>
+    <string name="viewer_stats_title">Document Stats</string>
+    <string name="viewer_stats_pages">Pages</string>
+    <string name="viewer_stats_words">Word count</string>
+    <string name="viewer_stats_chars">Characters</string>
+    <string name="viewer_stats_read_time">Est. reading time</string>
+    <string name="viewer_stats_size">File size</string>
+    <string name="viewer_password_title">Protected PDF</string>
+    <string name="viewer_password_desc">This PDF is password-protected. Enter the password to open it.</string>
+    <string name="viewer_password_wrong">Wrong password. Please try again.</string>
+    <string name="viewer_password_unlock">Unlock</string>
+
+    <!-- Scan action dialog -->
+    <string name="scan_action_title">What would you like to do?</string>
+    <string name="scan_action_subtitle">Choose an action for the scanned document</string>
+
+    <!-- Split with custom pages -->
+    <string name="split_pages_selected">%1$d pages selected</string>
+    <string name="split_select_all">Select All</string>
+    <string name="split_clear_selection">Clear</string>
+    <string name="split_folder_name_title">Name the Output Folder</string>
+    <string name="split_folder_name_hint">Folder name…</string>
+    <string name="split_folder_name_desc">All split pages will be saved inside this folder under Downloads/PDF Studio/Split/</string>
+    <string name="split_save_button">Save</string>
+
+    <!-- Watermark image/logo -->
+    <string name="watermark_mode_text">Text Watermark</string>
+    <string name="watermark_mode_image">Logo / Image Watermark</string>
+    <string name="watermark_pick_image">Pick Image / Logo</string>
+    <string name="watermark_image_selected">Image selected</string>
+    <string name="watermark_position_label">Position</string>
+    <string name="watermark_pos_center">Center</string>
+    <string name="watermark_pos_top_left">Top Left</string>
+    <string name="watermark_pos_top_right">Top Right</string>
+    <string name="watermark_pos_bottom_left">Bottom Left</string>
+    <string name="watermark_pos_bottom_right">Bottom Right</string>
+
+    <!-- Remote Signing - Sender -->
+    <string name="remote_sign_title">Send for Signing</string>
+    <string name="remote_sign_invite_title">Invite someone to sign</string>
+    <string name="remote_sign_invite_desc">Enter the signer\'s email and an optional message. A unique signing link will be generated for them.</string>
+    <string name="remote_sign_email_label">Signer\'s email address</string>
+    <string name="remote_sign_email_error">Please enter a valid email address</string>
+    <string name="remote_sign_message_label">Message to signer (optional)</string>
+    <string name="remote_sign_privacy_note">Privacy first: your document is never uploaded to any server. Only a document fingerprint (SHA-256) is shared.</string>
+    <string name="remote_sign_send_button">Send Signing Request</string>
+    <string name="remote_sign_session_id">Session #%1$s</string>
+    <string name="remote_sign_link_label">Signing link</string>
+    <string name="remote_sign_qr_label">Scan this QR code on the signing device</string>
+    <string name="remote_sign_qr_content_desc">QR code for the signing link</string>
+    <string name="remote_sign_link_copied">Link copied to clipboard</string>
+    <string name="remote_sign_share_button">Share signing link</string>
+    <string name="remote_sign_share_text">Please sign the document "%1$s".\n\nOpen this link to review and sign:\n%2$s\n\nSent via PDF Studio</string>
+    <string name="remote_sign_expires">Expires: %1$s</string>
+    <string name="remote_sign_open_signed">Open Signed Document</string>
+    <string name="remote_sign_cancel_session">Cancel session</string>
+    <string name="remote_sign_history_title">Previous sessions</string>
+    <string name="remote_sign_button">Send for Signing</string>
+
+    <!-- Remote Signing — Status badges -->
+    <string name="remote_status_pending">Pending</string>
+    <string name="remote_status_viewed">Viewed</string>
+    <string name="remote_status_signed">Signed</string>
+    <string name="remote_status_cancelled">Cancelled</string>
+    <string name="remote_status_expired">Expired</string>
+
+    <!-- Remote Signing — Signer -->
+    <string name="remote_signer_title">Sign Document</string>
+    <string name="remote_signer_loading">Loading signing request…</string>
+    <string name="remote_signer_doc_subtitle">Awaiting your signature</string>
+    <string name="remote_signer_message_label">Message from sender</string>
+    <string name="remote_signer_hash_label">Document fingerprint: %1$s</string>
+    <string name="remote_signer_privacy_note">Your signature will be applied locally on this device. The document is not uploaded anywhere.</string>
+    <string name="remote_signer_proceed_button">Review &amp; Sign</string>
+    <string name="remote_signer_signed_success_title">Document signed successfully!</string>
+    <string name="remote_signer_signed_success_desc">The signed document has been delivered to the sender.</string>
+    <string name="remote_signer_expired_title">This signing request has expired</string>
+    <string name="remote_signer_cancelled_title">This signing request was cancelled</string>
+    <string name="remote_signer_ended_desc">Please ask the sender to create a new signing request.</string>
+</resources>

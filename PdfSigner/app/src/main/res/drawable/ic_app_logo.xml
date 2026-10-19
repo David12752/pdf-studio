@@ -1,0 +1,27 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+
+    <!-- Bold "P" outer -->
+    <path
+        android:pathData="M6,4 L6,36 L12,36 L12,24 L22,24 Q30,24 30,14 Q30,4 22,4 Z"
+        android:fillColor="#FFFFFF"/>
+
+    <!-- "P" counter cutout -->
+    <path
+        android:pathData="M12,10 L21,10 Q24,10 24,14 Q24,18 21,18 L12,18 Z"
+        android:fillColor="#0F3460"/>
+
+    <!-- Pen nib -->
+    <path
+        android:pathData="M28,4 L36,4 L36,12 L32,16 L24,16 Z"
+        android:fillColor="#FF5722"/>
+
+    <!-- Nib tip -->
+    <path
+        android:pathData="M32,16 L36,12 L36,16 Z"
+        android:fillColor="#E84C1E"/>
+
+</vector>

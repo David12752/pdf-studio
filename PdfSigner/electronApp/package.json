@@ -1,0 +1,67 @@
+{
+  "name": "pdfsigner-electron",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PDF Studio Desktop built on Electron",
+  "author": "PDF Studio Team",
+  "main": "main.js",
+  "scripts": {
+    "dev": "electron .",
+    "start": "electron .",
+    "test": "node --test tests/*.test.js",
+    "audit:ci": "npm audit --audit-level=critical",
+    "verify": "npm run test && npm run audit:ci",
+    "build": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.pdfsigner.desktop",
+    "productName": "PDF Studio",
+    "protocols": [
+      {
+        "name": "PDF Studio Remote Sign",
+        "schemes": [
+          "pdfsigner"
+        ]
+      }
+    ],
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "server/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico",
+      "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "artifactName": "PDF-Studio-Setup-${version}.${ext}"
+    }
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "firebase": "^12.9.0",
+    "localtunnel": "^2.0.2",
+    "multer": "^2.0.2",
+    "nodemailer": "^8.0.1",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^3.11.174",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^25.1.8"
+  }
+}

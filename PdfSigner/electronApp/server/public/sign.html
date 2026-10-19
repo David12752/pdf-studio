@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>חתימה על מסמך • PDF Studio</title>
+
+  <!-- PDF.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <style>
+    /* ── Reset & base ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #1a3a6b;
+      --blue:   #2563eb;
+      --blue2:  #3b82f6;
+      --lblue:  #eff6ff;
+      --lblue2: #dbeafe;
+      --border: #bfdbfe;
+      --surface:#ffffff;
+      --text:   #1e293b;
+      --muted:  #64748b;
+      --light:  #f8faff;
+      --green:  #10b981;
+      --red:    #ef4444;
+      --yellow: #f59e0b;
+      --radius: 14px;
+      --shadow: 0 4px 24px rgba(37,99,235,.10);
+      --shadow2: 0 8px 40px rgba(37,99,235,.18);
+    }
+    html { font-size: 15px; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(160deg, #e8f0fe 0%, #f0f4ff 60%, #fafbff 100%);
+      min-height: 100vh;
+      color: var(--text);
+    }
+
+    /* ── Header ─────────────────────────────────────────────────────── */
+    .header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 16px rgba(26,58,107,.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -.3px;
+    }
+    .header-logo svg { width: 28px; height: 28px; }
+    .header-badge {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 999px;
+      padding: 6px 14px;
+      color: white;
+      font-size: .82rem;
+      font-weight: 600;
+      transition: .3s;
+    }
+    .header-badge.signed {
+      background: rgba(16,185,129,.25);
+      border-color: rgba(16,185,129,.5);
+    }
+    .badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #fbbf24;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    .badge-dot.done { background: var(--green); animation: none; }
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:.5; transform:scale(1.4); }
+    }
+
+    /* ── Layout wrapper ─────────────────────────────────────────────── */
+    .page-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    /* ── Steps indicator ────────────────────────────────────────────── */
+    .steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 28px;
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--muted);
+      transition: all .3s;
+    }
+    .step-item.active {
+      background: var(--lblue2);
+      color: var(--blue);
+    }
+    .step-item.done { color: var(--green); }
+    .step-num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 2px solid currentColor;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .78rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: .3s;
+    }
+    .step-item.active .step-num  { background: var(--blue); border-color: var(--blue); color: white; }
+    .step-item.done  .step-num   { background: var(--green); border-color: var(--green); color: white; }
+    .step-connector { width: 48px; height: 2px; background: var(--border); flex-shrink: 0; }
+
+    /* ── Document info card ─────────────────────────────────────────── */
+    .doc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      box-shadow: var(--shadow);
+    }
+    .doc-icon {
+      width: 52px; height: 52px;
+      background: var(--lblue);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+    .doc-meta { flex: 1; }
+    .doc-name { font-size: 1.08rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .doc-from { font-size: .86rem; color: var(--muted); margin-bottom: 4px; }
+    .doc-msg  { font-size: .9rem; color: #475569; background: var(--lblue); border-right: 3px solid var(--blue); border-radius: 4px; padding: 8px 12px; margin-top: 8px; line-height: 1.5; }
+    .doc-expiry { font-size: .78rem; color: var(--yellow); margin-top: 6px; }
+
+    /* ── Main content grid ───────────────────────────────────────────── */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .content-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── PDF panel ──────────────────────────────────────────────────── */
+    .pdf-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .pdf-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 10px 20px;
+      background: var(--light);
+      border-bottom: 1px solid var(--border);
+    }
+    .pdf-nav-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 34px; height: 34px;
+      cursor: pointer;
+      font-size: .9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: .2s;
+    }
+    .pdf-nav-btn:hover:not(:disabled) { background: var(--lblue2); border-color: var(--blue); }
+    .pdf-nav-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .page-info { font-size: .85rem; color: var(--muted); font-weight: 600; min-width: 110px; text-align: center; }
+    .pdf-viewport {
+      position: relative;
+      overflow: auto;
+      max-height: 72vh;
+      background: #5a6070;
+      display: flex;
+      justify-content: center;
+      padding: 16px;
+    }
+    .pdf-viewport canvas { display: block; box-shadow: 0 2px 12px rgba(0,0,0,.3); }
+    .sig-overlay-container {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+    }
+    /* Signature hotspot boxes drawn on top of PDF */
+    .sig-hotspot {
+      position: absolute;
+      border: 2px dashed var(--blue);
+      border-radius: 5px;
+      background: rgba(37,99,235,.07);
+      cursor: pointer;
+      pointer-events: all;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 3px;
+      transition: background .2s, border-color .2s;
+      animation: hotspot-pulse 2.5s ease-in-out infinite;
+    }
+    .sig-hotspot:hover {
+      background: rgba(37,99,235,.16);
+      border-color: var(--blue2);
+      animation: none;
+    }
+    .sig-hotspot.signed {
+      border-color: var(--green);
+      border-style: solid;
+      background: rgba(16,185,129,.06);
+      animation: none;
+    }
+    .sig-hotspot-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--blue);
+      background: rgba(255,255,255,.9);
+      padding: 2px 8px;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+    .sig-hotspot.signed .sig-hotspot-label { color: var(--green); }
+    .sig-hotspot-icon { font-size: 18px; pointer-events: none; }
+    @keyframes hotspot-pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(37,99,235,.4); }
+      50%      { box-shadow: 0 0 0 6px rgba(37,99,235,0); }
+    }
+
+    /* ── Side panel ─────────────────────────────────────────────────── */
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .panel-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .panel-title {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Signature fields checklist */
+    .sig-list { display: flex; flex-direction: column; gap: 10px; }
+    .sig-list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: .88rem;
+      cursor: pointer;
+      transition: .2s;
+      background: var(--light);
+    }
+    .sig-list-item:hover { border-color: var(--blue2); background: var(--lblue); }
+    .sig-list-item.needed { border-color: var(--yellow); background: #fffbeb; }
+    .sig-list-item.done   { border-color: var(--green);  background: #f0fdf4; }
+    .sig-list-label { font-weight: 600; }
+    .sig-list-status { font-size: .8rem; color: var(--muted); }
+    .sig-list-item.needed .sig-list-status { color: var(--yellow); }
+    .sig-list-item.done   .sig-list-status { color: var(--green); }
+
+    /* Signer info form */
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: .82rem; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
+    .form-input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-size: .9rem;
+      color: var(--text);
+      background: var(--surface);
+      outline: none;
+      transition: border-color .2s;
+    }
+    .form-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
+
+    /* Submit button */
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      color: white;
+      border: none;
+      border-radius: 11px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 16px rgba(37,99,235,.3);
+    }
+    .btn-submit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,.4); }
+    .btn-submit:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+    .btn-submit.loading { opacity: .8; }
+
+    /* ── Modal ──────────────────────────────────────────────────────── */
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(15,23,42,.55);
+      backdrop-filter: blur(4px);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s;
+    }
+    .modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .modal-box {
+      background: var(--surface);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 560px;
+      box-shadow: 0 20px 60px rgba(15,23,42,.3);
+      overflow: hidden;
+      transform: translateY(20px) scale(.97);
+      transition: transform .25s;
+    }
+    .modal-backdrop.open .modal-box { transform: none; }
+    .modal-header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-header h3 { color: white; font-size: 1.1rem; font-weight: 700; }
+    .modal-close {
+      background: rgba(255,255,255,.2);
+      border: none;
+      border-radius: 8px;
+      width: 32px; height: 32px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: .2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,.3); }
+    .modal-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: var(--light);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: transparent;
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: .2s;
+    }
+    .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); background: var(--lblue); }
+    .modal-body { padding: 20px 24px; }
+
+    /* Draw tab */
+    .canvas-wrap {
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: crosshair;
+      background: white;
+    }
+    #sigCanvas { display: block; touch-action: none; }
+    .canvas-hint { font-size: .78rem; color: var(--muted); margin: 8px 0 2px; text-align: center; }
+    .btn-clear {
+      margin-top: 8px;
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 16px;
+      font-size: .85rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: .2s;
+    }
+    .btn-clear:hover { border-color: var(--red); color: var(--red); }
+
+    /* Type tab */
+    .type-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s;
+      margin-bottom: 14px;
+    }
+    .type-input:focus { border-color: var(--blue); }
+    .type-preview-box {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--light);
+      padding: 16px;
+      text-align: center;
+    }
+    .type-preview-text {
+      font-size: 1.9rem;
+      color: var(--navy);
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-style: italic;
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .btn-secondary {
+      padding: 10px 22px;
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: .2s;
+    }
+    .btn-secondary:hover { border-color: var(--text); color: var(--text); }
+    .btn-primary {
+      padding: 10px 26px;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      border: none;
+      border-radius: 9px;
+      font-size: .9rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: .2s;
+      box-shadow: 0 2px 10px rgba(37,99,235,.3);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(37,99,235,.4); }
+    .btn-primary:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+    /* ── Success screen ─────────────────────────────────────────────── */
+    .success-screen {
+      position: fixed; inset: 0;
+      background: linear-gradient(160deg, #e8f0fe 0%, #f0f4ff 100%);
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .success-card {
+      background: white;
+      border-radius: 22px;
+      padding: 56px 48px;
+      text-align: center;
+      box-shadow: var(--shadow2);
+      max-width: 460px;
+      width: 100%;
+    }
+    .success-icon { font-size: 72px; margin-bottom: 20px; animation: pop .5s cubic-bezier(.3,1.5,.5,1); }
+    @keyframes pop {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .success-title { font-size: 1.7rem; font-weight: 800; color: var(--text); margin-bottom: 14px; }
+    .success-sub   { font-size: 1rem; color: var(--muted); line-height: 1.7; }
+    .success-sub strong { color: var(--navy); }
+
+    /* ── Error / loading ────────────────────────────────────────────── */
+    .error-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+    }
+    .error-card {
+      background: white;
+      border-radius: 18px;
+      padding: 48px 40px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      max-width: 420px;
+    }
+    .error-icon { font-size: 52px; margin-bottom: 18px; }
+    .spinner {
+      width: 42px; height: 42px;
+      border: 4px solid var(--border);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 40px auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Misc ───────────────────────────────────────────────────────── */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ────────────────────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-logo">
+    <svg viewBox="0 0 28 28" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="2" width="16" height="20" rx="2"/>
+      <path d="M8 7h8M8 11h8M8 15h5"/>
+      <path d="M18 17l2 2 4-4" stroke="#6ee7b7" stroke-width="2.2"/>
+    </svg>
+    PDF Studio
+  </div>
+  <div class="header-badge" id="headerBadge">
+    <div class="badge-dot" id="badgeDot"></div>
+    <span id="badgeText">ממתין לחתימה</span>
+  </div>
+</header>
+
+<!-- ── Loading state ─────────────────────────────────────────────────── -->
+<div id="loadingState" class="page-wrap" style="text-align:center;">
+  <div class="spinner"></div>
+</div>
+
+<!-- ── Error state ───────────────────────────────────────────────────── -->
+<div id="errorState" class="page-wrap hidden">
+  <div class="error-screen">
+    <div class="error-card">
+      <div class="error-icon" id="errorIcon">⚠️</div>
+      <h2 id="errorTitle" style="margin-bottom:10px;font-size:1.3rem;">שגיאה</h2>
+      <p id="errorMsg" style="color:var(--muted);font-size:.95rem;"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Main content ──────────────────────────────────────────────────── -->
+<div id="mainContent" class="page-wrap hidden">
+
+  <!-- Steps -->
+  <div class="steps">
+    <div class="step-item active" id="stepItem1">
+      <div class="step-num">1</div>
+      <span>סקירה</span>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-item" id="stepItem2">
+      <div class="step-num">2</div>
+      <span>חתימה</span>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-item" id="stepItem3">
+      <div class="step-num">3</div>
+      <span>השלמה</span>
+    </div>
+  </div>
+
+  <!-- Document info card -->
+  <div class="doc-card">
+    <div class="doc-icon">📄</div>
+    <div class="doc-meta">
+      <div class="doc-name" id="docName">טוען…</div>
+      <div class="doc-from">בקשה מאת: <strong id="docSender">—</strong></div>
+      <div class="doc-msg hidden" id="docMsg"></div>
+      <div class="doc-expiry" id="docExpiry"></div>
+    </div>
+  </div>
+
+  <!-- Content grid: PDF viewer + side panel -->
+  <div class="content-grid">
+
+    <!-- PDF viewer -->
+    <div class="pdf-panel">
+      <div class="pdf-toolbar">
+        <button class="pdf-nav-btn" id="btnPrev" title="עמוד קודם">◀</button>
+        <span class="page-info" id="pageInfo">עמוד 1 מתוך 1</span>
+        <button class="pdf-nav-btn" id="btnNext" title="עמוד הבא">▶</button>
+      </div>
+      <div class="pdf-viewport" id="pdfViewport">
+        <canvas id="pdfCanvas"></canvas>
+        <div id="overlayContainer" class="sig-overlay-container"></div>
+      </div>
+    </div>
+
+    <!-- Side panel -->
+    <div class="side-panel">
+
+      <!-- Signature checklist -->
+      <div class="panel-card">
+        <div class="panel-title">
+          ✍️ שדות לחתימה
+        </div>
+        <div class="sig-list" id="sigList"></div>
+      </div>
+
+      <!-- Signer info -->
+      <div class="panel-card">
+        <div class="panel-title">👤 פרטי החותם</div>
+        <div class="form-group">
+          <label class="form-label" for="inputName">שם מלא *</label>
+          <input class="form-input" id="inputName" type="text" placeholder="ישראל ישראלי" autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inputEmail">דואר אלקטרוני</label>
+          <input class="form-input" id="inputEmail" type="email" placeholder="your@email.com" autocomplete="email" />
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button class="btn-submit" id="btnSubmit" disabled>
+        📩 שלח מסמך חתום
+      </button>
+
+      <p style="font-size:.75rem;color:var(--muted);text-align:center;line-height:1.6;">
+        המסמך החתום יישלח בדואר אלקטרוני לשולח.<br>
+        <strong>מאובטח ומוצפן.</strong>
+      </p>
+    </div>
+  </div><!-- /.content-grid -->
+
+</div><!-- /#mainContent -->
+
+<!-- ── Signature modal ───────────────────────────────────────────────── -->
+<div class="modal-backdrop" id="sigModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalTitle">חתימה</h3>
+      <button class="modal-close" id="btnCloseModal" aria-label="סגור">✕</button>
+    </div>
+    <div class="modal-tabs">
+      <button class="tab-btn active" id="tabDraw" data-tab="draw">✏️ ציור</button>
+      <button class="tab-btn" id="tabType" data-tab="type">⌨️ הקלדה</button>
+    </div>
+    <div class="modal-body">
+      <!-- Draw panel -->
+      <div id="panelDraw">
+        <div class="canvas-wrap">
+          <canvas id="sigCanvas" width="512" height="140"></canvas>
+        </div>
+        <p class="canvas-hint">חתום אצבע / עכבר בתוך המסגרת</p>
+        <button class="btn-clear" id="btnClearSig">🗑 מחק</button>
+      </div>
+      <!-- Type panel -->
+      <div id="panelType" class="hidden">
+        <input class="type-input" id="typedSig" placeholder="הקלד את שמך" />
+        <div class="type-preview-box">
+          <div class="type-preview-text" id="typedPreview">שמך כאן</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" id="btnCancelSig">ביטול</button>
+      <button class="btn-primary" id="btnApplySig">✅ אשר חתימה</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Success screen ────────────────────────────────────────────────── -->
+<div class="success-screen hidden" id="successScreen">
+  <div class="success-card">
+    <div class="success-icon">✅</div>
+    <h1 class="success-title">חתמת בהצלחה!</h1>
+    <p class="success-sub">
+      המסמך <strong id="successDocName"></strong> נחתם ונשלח לשולח.<br>
+      תודה על שיתוף הפעולה.
+    </p>
+    <div style="margin-top:30px;padding:14px 20px;background:var(--lblue);border-radius:10px;font-size:.88rem;color:var(--muted);">
+      ניתן לסגור חלון זה.
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── PDF.js worker ─────────────────────────────────────────────────── */
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+/* ── Helpers ───────────────────────────────────────────────────────── */
+const $ = (id) => document.getElementById(id);
+const sessionId = location.pathname.split('/').pop();
+const BASE = location.origin;
+const sessionToken = new URLSearchParams(location.search).get('token') || '';
+
+function buildSessionUrl(suffix = '') {
+  const baseUrl = `${BASE}/api/sessions/${encodeURIComponent(sessionId)}${suffix}`;
+  if (!sessionToken) return baseUrl;
+  const separator = baseUrl.includes('?') ? '&' : '?';
+  return `${baseUrl}${separator}token=${encodeURIComponent(sessionToken)}`;
+}
+
+function withSessionHeaders(headers = {}) {
+  if (!sessionToken) return headers;
+  return { ...headers, 'x-session-token': sessionToken };
+}
+
+let sessionData  = null;
+let pdfDoc       = null;
+let currentPage  = 1;
+let totalPages   = 1;
+let pdfScale     = 1.4;
+let canvasWidth  = 0;
+let canvasHeight = 0;
+let renderOffset = { top: 0, left: 0 };
+
+// Per-field: null = unsigned, DataURL string = signed
+let sigImages = [];
+let activeFieldIndex = null;
+
+/* ── Init ──────────────────────────────────────────────────────────── */
+async function init() {
+  try {
+    if (!sessionToken) {
+      showError('🔒', 'קישור לא תקין', 'חסר אסימון גישה עבור בקשת החתימה.');
+      return;
+    }
+
+    const sessionRes = await fetch(buildSessionUrl());
+    if (!sessionRes.ok) {
+      const data = await sessionRes.json().catch(() => ({}));
+      const icon = sessionRes.status === 410 ? '⏰' : sessionRes.status === 401 ? '🔒' : '🔍';
+      const title = sessionRes.status === 410
+        ? 'קישור פג תוקף'
+        : sessionRes.status === 401
+          ? 'גישה נדחתה'
+          : 'לא נמצא';
+      showError(icon, title,
+        data.error || 'לא ניתן למצוא את בקשת החתימה.');
+      return;
+    }
+    sessionData = await sessionRes.json();
+
+    if (sessionData.status === 'SIGNED') {
+      showError('✅', 'מסמך כבר נחתם', 'המסמך כבר נחתם בעבר. תודה!');
+      return;
+    }
+    if (sessionData.status === 'EXPIRED') {
+      showError('⏰', 'קישור פג תוקף', 'בקשת החתימה הזו אינה זמינה יותר.');
+      return;
+    }
+
+    // Populate UI
+    $('docName').textContent = sessionData.fileName;
+    $('docSender').textContent = sessionData.senderName || 'לא ידוע';
+    if (sessionData.message) {
+      $('docMsg').textContent = sessionData.message;
+      $('docMsg').classList.remove('hidden');
+    }
+
+    sigImages = new Array(sessionData.fields.length).fill(null);
+    buildSigList();
+
+    // Load PDF
+    const pdfRes = await fetch(buildSessionUrl('/document'));
+    if (!pdfRes.ok) {
+      const data = await pdfRes.json().catch(() => ({}));
+      throw new Error(data.error || 'לא ניתן לטעון את המסמך');
+    }
+    const pdfBuf = await pdfRes.arrayBuffer();
+    pdfDoc = await pdfjsLib.getDocument({ data: pdfBuf }).promise;
+    totalPages = pdfDoc.numPages;
+    await renderPage(1);
+
+    $('loadingState').classList.add('hidden');
+    $('mainContent').classList.remove('hidden');
+  } catch (err) {
+    showError('⚠️', 'שגיאה', err.message);
+  }
+}
+
+/* ── PDF rendering ─────────────────────────────────────────────────── */
+async function renderPage(pageNum) {
+  currentPage = Math.max(1, Math.min(pageNum, totalPages));
+  $('pageInfo').textContent = `עמוד ${currentPage} מתוך ${totalPages}`;
+  $('btnPrev').disabled = currentPage <= 1;
+  $('btnNext').disabled = currentPage >= totalPages;
+
+  const page = await pdfDoc.getPage(currentPage);
+  const viewport = page.getViewport({ scale: pdfScale });
+
+  const canvas = $('pdfCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width  = viewport.width;
+  canvas.height = viewport.height;
+  canvasWidth   = viewport.width;
+  canvasHeight  = viewport.height;
+
+  await page.render({ canvasContext: ctx, viewport }).promise;
+
+  // Store offset of canvas inside the viewport div
+  const canvasRect = canvas.getBoundingClientRect();
+  const vpRect     = $('pdfViewport').getBoundingClientRect();
+  renderOffset = {
+    top:  canvasRect.top  - vpRect.top  + $('pdfViewport').scrollTop,
+    left: canvasRect.left - vpRect.left + $('pdfViewport').scrollLeft,
+  };
+
+  drawOverlays(currentPage - 1); // 0-indexed page
+}
+
+/* ── Overlays ──────────────────────────────────────────────────────── */
+function drawOverlays(pageIdx) {
+  const container = $('overlayContainer');
+  container.innerHTML = '';
+
+  if (!sessionData) return;
+
+  // Get PDF page size for PDF→canvas coordinate mapping
+  const fields = sessionData.fields.filter((f) => f.page === pageIdx);
+
+  fields.forEach((field) => {
+    const globalIdx = sessionData.fields.indexOf(field);
+    const el = document.createElement('div');
+    el.className = 'sig-hotspot' + (sigImages[globalIdx] ? ' signed' : ' needed');
+
+    // pdf-lib uses bottom-left origin; canvas uses top-left
+    // pdfY → canvasY = canvasHeight - pdfY - fieldHeight
+    const cx = renderOffset.left + 16 + field.x * pdfScale;
+    const cy = renderOffset.top  + 16 + (canvasHeight / pdfScale - field.y - field.height) * pdfScale;
+    const cw = field.width  * pdfScale;
+    const ch = field.height * pdfScale;
+
+    el.style.cssText = `left:${cx}px;top:${cy}px;width:${cw}px;height:${ch}px;`;
+
+    const icon  = document.createElement('div');
+    icon.className = 'sig-hotspot-icon';
+    icon.textContent = sigImages[globalIdx] ? '✅' : '✍️';
+
+    const label = document.createElement('div');
+    label.className = 'sig-hotspot-label';
+    label.textContent = sigImages[globalIdx] ? 'נחתם' : 'לחץ לחתימה';
+
+    el.appendChild(icon);
+    el.appendChild(label);
+
+    el.addEventListener('click', () => openSignModal(globalIdx, field.label));
+
+    // If already signed, show the signature image
+    if (sigImages[globalIdx]) {
+      const img = document.createElement('img');
+      img.src = sigImages[globalIdx];
+      img.style.cssText = `position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;`;
+      el.insertBefore(img, el.firstChild);
+    }
+
+    container.appendChild(el);
+  });
+}
+
+/* ── Signature checklist ───────────────────────────────────────────── */
+function buildSigList() {
+  const list = $('sigList');
+  list.innerHTML = '';
+  sessionData.fields.forEach((field, i) => {
+    const item = document.createElement('div');
+    item.className = 'sig-list-item ' + (sigImages[i] ? 'done' : 'needed');
+    item.id = `sigListItem${i}`;
+    const info = document.createElement('div');
+    const label = document.createElement('div');
+    label.className = 'sig-list-label';
+    label.textContent = field.label;
+    const page = document.createElement('div');
+    page.className = 'sig-list-status';
+    page.textContent = `עמוד ${field.page + 1}`;
+    info.appendChild(label);
+    info.appendChild(page);
+
+    const status = document.createElement('div');
+    status.className = 'sig-list-status';
+    status.textContent = sigImages[i] ? '✅ נחתם' : '⚠️ נדרש';
+
+    item.appendChild(info);
+    item.appendChild(status);
+    item.addEventListener('click', () => {
+      if (field.page + 1 !== currentPage) renderPage(field.page + 1);
+      openSignModal(i, field.label);
+    });
+    list.appendChild(item);
+  });
+  updateSubmitBtn();
+}
+
+function updateSubmitBtn() {
+  const allDone = sigImages.every((s) => s !== null);
+  $('btnSubmit').disabled = !allDone || !$('inputName').value.trim();
+}
+
+/* ── Modal ─────────────────────────────────────────────────────────── */
+let activeTab = 'draw';
+let isDrawing = false;
+let sigCtx    = null;
+
+function openSignModal(fieldIndex, label) {
+  activeFieldIndex = fieldIndex;
+  $('modalTitle').textContent = `חתימה: ${label}`;
+  clearCanvas();
+  $('typedSig').value = $('inputName').value || '';
+  $('typedPreview').textContent = $('inputName').value || 'שמך כאן';
+  switchTab('draw');
+  $('sigModal').classList.add('open');
+}
+
+function closeModal() {
+  $('sigModal').classList.remove('open');
+  activeFieldIndex = null;
+}
+
+function switchTab(tab) {
+  activeTab = tab;
+  $('panelDraw').classList.toggle('hidden', tab !== 'draw');
+  $('panelType').classList.toggle('hidden', tab !== 'type');
+  document.querySelectorAll('.tab-btn').forEach((b) => {
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+}
+
+/* canvas drawing */
+function initCanvas() {
+  const canvas = $('sigCanvas');
+  sigCtx = canvas.getContext('2d');
+  sigCtx.strokeStyle = '#1a3a6b';
+  sigCtx.lineWidth = 2.5;
+  sigCtx.lineCap = 'round';
+  sigCtx.lineJoin = 'round';
+
+  const getPos = (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const src  = e.touches ? e.touches[0] : e;
+    return {
+      x: (src.clientX - rect.left) * (canvas.width  / rect.width),
+      y: (src.clientY - rect.top ) * (canvas.height / rect.height),
+    };
+  };
+
+  canvas.addEventListener('pointerdown', (e) => {
+    isDrawing = true;
+    const p = getPos(e);
+    sigCtx.beginPath();
+    sigCtx.moveTo(p.x, p.y);
+    e.preventDefault();
+  });
+  canvas.addEventListener('pointermove', (e) => {
+    if (!isDrawing) return;
+    const p = getPos(e);
+    sigCtx.lineTo(p.x, p.y);
+    sigCtx.stroke();
+    e.preventDefault();
+  });
+  canvas.addEventListener('pointerup',   () => { isDrawing = false; });
+  canvas.addEventListener('pointerout',  () => { isDrawing = false; });
+
+  // Touch support
+  canvas.addEventListener('touchstart',  (e) => { e.preventDefault(); canvas.dispatchEvent(new PointerEvent('pointerdown', { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY })); }, { passive: false });
+  canvas.addEventListener('touchmove',   (e) => { e.preventDefault(); canvas.dispatchEvent(new PointerEvent('pointermove', { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY })); }, { passive: false });
+  canvas.addEventListener('touchend',    (e) => { e.preventDefault(); canvas.dispatchEvent(new PointerEvent('pointerup')); }, { passive: false });
+}
+
+function clearCanvas() {
+  if (!sigCtx) return;
+  sigCtx.clearRect(0, 0, $('sigCanvas').width, $('sigCanvas').height);
+}
+
+function isCanvasBlank() {
+  if (!sigCtx) return true;
+  const data = sigCtx.getImageData(0, 0, $('sigCanvas').width, $('sigCanvas').height).data;
+  for (let i = 3; i < data.length; i += 4) { if (data[i] > 10) return false; }
+  return true;
+}
+
+function getSignatureDataURL() {
+  if (activeTab === 'draw') {
+    if (isCanvasBlank()) return null;
+    return $('sigCanvas').toDataURL('image/png');
+  } else {
+    const text = $('typedSig').value.trim();
+    if (!text) return null;
+    // Render text to canvas
+    const c = document.createElement('canvas');
+    c.width = 512; c.height = 140;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#1a3a6b';
+    ctx.font = 'italic 64px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, 256, 70);
+    return c.toDataURL('image/png');
+  }
+}
+
+/* ── Submit ────────────────────────────────────────────────────────── */
+async function submitSigning() {
+  const signerName  = $('inputName').value.trim();
+  const signerEmail = $('inputEmail').value.trim();
+  if (!signerName) { alert('נא להזין שם מלא'); return; }
+
+  $('btnSubmit').disabled = true;
+  $('btnSubmit').textContent = '⏳ שולח…';
+
+  const signatures = sigImages
+    .map((img, i) => img ? { fieldIndex: i, imageBase64: img } : null)
+    .filter(Boolean);
+
+  try {
+    const res = await fetch(buildSessionUrl('/sign'), {
+      method: 'POST',
+      headers: withSessionHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ signerName, signerEmail, signatures, token: sessionToken }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'שגיאה');
+
+    // Success!
+    $('successDocName').textContent = sessionData.fileName;
+    $('mainContent').classList.add('hidden');
+    $('successScreen').classList.remove('hidden');
+
+    // Update header
+    $('badgeDot').classList.add('done');
+    $('badgeText').textContent = 'נחתם ✅';
+    $('headerBadge').classList.add('signed');
+  } catch (err) {
+    alert(`שגיאה בשליחה: ${err.message}`);
+    $('btnSubmit').disabled = false;
+    $('btnSubmit').innerHTML = '📩 שלח מסמך חתום';
+  }
+}
+
+/* ── Error helper ──────────────────────────────────────────────────── */
+function showError(icon, title, msg) {
+  $('loadingState').classList.add('hidden');
+  $('mainContent').classList.add('hidden');
+  $('errorIcon').textContent  = icon;
+  $('errorTitle').textContent = title;
+  $('errorMsg').textContent   = msg;
+  $('errorState').classList.remove('hidden');
+}
+
+/* ── Event listeners ───────────────────────────────────────────────── */
+$('btnPrev').addEventListener('click', () => renderPage(currentPage - 1));
+$('btnNext').addEventListener('click', () => renderPage(currentPage + 1));
+
+$('btnCloseModal').addEventListener('click', closeModal);
+$('btnCancelSig').addEventListener('click', closeModal);
+
+$('sigModal').addEventListener('click', (e) => {
+  if (e.target === $('sigModal')) closeModal();
+});
+
+document.querySelectorAll('.tab-btn').forEach((btn) => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+$('btnClearSig').addEventListener('click', clearCanvas);
+
+$('typedSig').addEventListener('input', (e) => {
+  $('typedPreview').textContent = e.target.value || 'שמך כאן';
+});
+
+$('btnApplySig').addEventListener('click', () => {
+  const img = getSignatureDataURL();
+  if (!img) { alert('נא לחתום לפני האישור'); return; }
+  sigImages[activeFieldIndex] = img;
+  buildSigList();
+  renderPage(currentPage);
+  closeModal();
+});
+
+$('btnSubmit').addEventListener('click', submitSigning);
+
+$('inputName').addEventListener('input', updateSubmitBtn);
+
+/* ── Keyboard shortcut: Esc = close modal ──────────────────────────── */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+/* ── Boot ──────────────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  initCanvas();
+  init();
+});
+</script>
+</body>
+</html>

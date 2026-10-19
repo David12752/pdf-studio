@@ -1,0 +1,40 @@
+name: Desktop CI
+
+on:
+  push:
+    paths:
+      - 'PdfSigner/electronApp/**'
+      - '.github/workflows/desktop-ci.yml'
+  pull_request:
+    paths:
+      - 'PdfSigner/electronApp/**'
+      - '.github/workflows/desktop-ci.yml'
+
+jobs:
+  electron-build-test:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: PdfSigner/electronApp/package-lock.json
+
+      - name: Install dependencies
+        run: npm --prefix "PdfSigner/electronApp" ci
+
+      - name: Run unit tests
+        run: npm --prefix "PdfSigner/electronApp" run test
+
+      - name: Security audit gate
+        run: npm --prefix "PdfSigner/electronApp" run audit:ci
+
+      - name: Build desktop package
+        run: npm --prefix "PdfSigner/electronApp" run build

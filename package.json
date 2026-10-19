@@ -1,0 +1,10 @@
+{
+  "name": "pdf-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix \"PdfSigner/electronApp\" run dev",
+    "test": "npm --prefix \"PdfSigner/electronApp\" run test",
+    "build": "npm --prefix \"PdfSigner/electronApp\" run build",
+    "dist": "npm --prefix \"PdfSigner/electronApp\" run dist"
+  }
+}

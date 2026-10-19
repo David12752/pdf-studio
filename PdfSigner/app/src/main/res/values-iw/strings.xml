@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PDF Studio</string>
+    <string name="home_title">PDF Studio</string>
+    <string name="home_subtitle">PDF · חתימה · עריכה · ייצוא</string>
+    <string name="select_pdf_title">בחירת קובץ PDF לחתימה</string>
+    <string name="select_pdf_desc">פתח קובץ PDF, צייר חתימה,\nמקם אותה על המסמך וייצא.</string>
+    <string name="open_pdf_button">פתח קובץ</string>
+    <string name="place_signature_title">מיקום החתימה</string>
+    <string name="previous_page">דף קודם</string>
+    <string name="next_page">דף הבא</string>
+    <string name="page_x_of_y">עמוד %1$d מתוך %2$d</string>
+    <string name="confirm_placement">אישור וייצוא</string>
+    <string name="draw_signature_title">צייר את חתימתך</string>
+    <string name="undo">בטל</string>
+    <string name="clear">נקה</string>
+    <string name="use">השתמש</string>
+    <string name="cancel">ביטול</string>
+    <string name="export_title">ייצוא מסמך חתום</string>
+    <string name="exporting_wait">מייצא, נא להמתין…</string>
+    <string name="choose_export_format">בחר פורמט ייצוא</string>
+    <string name="export_desc">הקובץ החתום יישמר במכשיר שלך.</string>
+    <string name="save_as_pdf">שמור כ-PDF</string>
+    <string name="save_as_pdf_desc">קובץ PDF מקורי עם חתימה מוטמעת</string>
+    <string name="save_as_png">שמור כ-PNG</string>
+    <string name="save_as_png_desc">תמונה איכותית עם רקע שקוף</string>
+    <string name="save_as_jpg">שמור כ-JPG</string>
+    <string name="save_as_jpg_desc">תמונה דחוסה – גודל קובץ קטן יותר</string>
+    <string name="start_over">התחל מחדש</string>
+    <string name="saved_success">נשמר בהצלחה!</string>
+    <string name="saved_to_downloads">קובץ ה-PDF נשמר בתיקיית ההורדות</string>
+    <string name="saved_to_pictures_png">קובץ PNG נשמר בתיקיית התמונות</string>
+    <string name="saved_to_pictures_jpg">קובץ JPG נשמר בתיקיית התמונות</string>
+    <string name="share">שתף</string>
+    <string name="export_failed">הייצוא נכשל</string>
+    <string name="pick_save_location">בחר מיקום שמירה</string>
+    <string name="language_settings">שפה</string>
+    <string name="change_language">שינוי שפה</string>
+    <string name="drag_signature_hint">גרור להזזה · פינה לשינוי גודל</string>
+    <string name="resize_signature_hint">פינה כחולה = ידית שינוי גודל</string>
+    <string name="scan_document_button">סרוק מסמך</string>
+    <string name="pdf_preview_desc">תצוגה מקדימה של PDF</string>
+    <string name="ink_color_label">צבע דיו</string>
+    <string name="color_black">שחור</string>
+    <string name="color_blue">כחול</string>
+    <string name="color_red">אדום</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_home">בית</string>
+    <string name="nav_sign">חתימה</string>
+    <string name="nav_tools">כלים</string>
+    <string name="nav_recent">אחרונים</string>
+    <string name="nav_settings">הגדרות</string>
+
+    <!-- PDF Tools -->
+    <string name="pdf_tools_button">כלי PDF</string>
+    <string name="pdf_tools_title">כלי PDF</string>
+    <string name="merge_pdfs">מיזוג PDF</string>
+    <string name="merge_pdfs_desc">שלב מספר קבצי PDF לקובץ אחד</string>
+    <string name="split_pdf">פיצול PDF</string>
+    <string name="split_pdf_desc">פצל קובץ PDF לעמודים נפרדים</string>
+    <string name="extract_page">חילוץ עמוד</string>
+    <string name="extract_page_desc">שמור עמוד בודד כקובץ PDF חדש</string>
+    <string name="convert_to_word">PDF לטקסט</string>
+    <string name="convert_to_word_desc">חלץ טקסט מ-PDF לקובץ .txt</string>
+    <string name="add_pdf">הוסף PDF</string>
+    <string name="remove">הסר</string>
+    <string name="merge_button">מיזוג</string>
+    <string name="split_button">פיצול</string>
+    <string name="extract_button">חילוץ</string>
+    <string name="convert_button">המרה</string>
+    <string name="processing">מעבד…</string>
+    <string name="select_page_to_extract">עמוד לחילוץ: %1$d</string>
+    <string name="result_saved">הקובץ נשמר בתיקיית ההורדות</string>
+    <string name="convert_result_saved">קובץ הטקסט נשמר בתיקיות ההורדות</string>
+    <string name="pdf_tools_error">הפעולה נכשלה</string>
+    <string name="files_selected">נבחרו %1$d קבצים</string>
+    <string name="no_files_selected">לא נבחרו קבצים</string>
+    <string name="converting">ממיר…</string>
+
+    <!-- Scan enhancement -->
+    <string name="scan_enhance_title">שיפור סריקה</string>
+    <string name="scan_mode_color">צבע</string>
+    <string name="scan_mode_grayscale">גווני אפור</string>
+    <string name="scan_mode_bw">שחור-לבן</string>
+    <string name="scan_contrast_label">ניגודיות</string>
+    <string name="scan_brightness_label">בהירות</string>
+    <string name="scan_sharpness_label">חדות</string>
+    <string name="apply_and_continue">החל והמשך</string>
+
+    <!-- Text stamp -->
+    <string name="text_stamp_title">הוספת טקסט</string>
+    <string name="text_stamp_hint">הקלד טקסט…</string>
+    <string name="text_stamp_font_size">גודל גופן: %1$d נקודות</string>
+    <string name="text_stamp_bold">מודגש</string>
+    <string name="text_stamp_color_label">צבע טקסט</string>
+    <string name="text_stamp_add_button">הנח על המסמך</string>
+    <string name="text_stamp_drag_hint">גרור את הטקסט למיקום</string>
+    <string name="text_stamp_added">חותמת טקסט נוספה</string>
+    <string name="text_stamp_empty_error">יש להקליד טקסט תחילה</string>
+    <string name="text_stamps_count">נוספו %1$d חותמות טקסט</string>
+    <string name="remove_stamp">הסר חותמת %1$d</string>
+    <string name="add_text_button">הוסף טקסט</string>
+
+    <!-- Recent files -->
+    <string name="recent_files_title">אחרונים</string>
+    <string name="no_recent_files">אין קבצים אחרונים</string>
+    <string name="remove_recent">הסר מהאחרונים</string>
+    <string name="pages_count">%1$d עמודים</string>
+
+    <!-- Step indicator -->
+    <string name="step_open">פתיחה</string>
+    <string name="step_sign">חתימה</string>
+    <string name="step_place">מיקום</string>
+    <string name="step_export">ייצוא</string>
+
+    <!-- Signature drawing -->
+    <string name="quick_actions">פעולות מהירות</string>
+    <string name="pen_thickness_label">עובי עט: %1$d</string>
+    <string name="save_signature">שמור חתימה</string>
+    <string name="saved_signatures_title">חתימות שמורות</string>
+    <string name="saved_signatures_empty">אין חתימות שמורות עדיין</string>
+    <string name="use_saved_signature">השתמש בחתימה זו</string>
+    <string name="delete_saved_signature">מחק</string>
+    <string name="draw_tab">ציור</string>
+    <string name="saved_tab">שמורות</string>
+    <string name="signature_saved_toast">החתימה נשמרה!</string>
+    <string name="sign_here">חתום כאן</string>
+
+    <!-- PDF Picker -->
+    <string name="search_pdfs">חיפוש קבצי PDF…</string>
+    <string name="scanning_device">סורק את המכשיר לקבצי PDF…</string>
+    <string name="no_pdfs_on_device">לא נמצאו קבצי PDF במכשיר</string>
+    <string name="no_pdf_found_query">לא נמצאו קבצי PDF עם ״%1$s״</string>
+    <string name="pdf_count">%1$d קבצים</string>
+    <string name="loading_previews">טוען תצוגות מקדימות…</string>
+    <string name="browse_files">עיון בקבצים</string>
+    <string name="refresh">רענון</string>
+    <string name="pick_pdf_to_sign">בחר PDF לחתימה</string>
+    <string name="pick_pdf_for_tools">בחר קובץ PDF</string>
+
+    <!-- File Opener -->
+    <string name="open_file">פתיחת קובץ</string>
+    <string name="open_file_desc">פתח קובצי אקסל, וורד, פאוורפויינט, תמונות ועוד</string>
+    <string name="open_file_button">פתח קובץ</string>
+    <string name="file_type_excel">גיליון אקסל</string>
+    <string name="file_type_word">מסמך וורד</string>
+    <string name="file_type_powerpoint">מצגת פאוורפוינט</string>
+    <string name="file_type_image">קובץ תמונה</string>
+    <string name="file_type_text">קובץ טקסט</string>
+    <string name="file_type_any">כל סוג קובץ</string>
+    <string name="file_opened_success">הקובץ נפתח בהצלחה</string>
+    <string name="file_open_failed">לא ניתן לפתוח את הקובץ. לא נמצאה אפליקציה מתאימה.</string>
+    <string name="choose_file_type">בחר סוג קובץ לפתיחה</string>
+    <string name="open_with">פתח באמצעות…</string>
+
+    <!-- Document Viewer -->
+    <string name="viewer_no_preview">לא ניתן להציג תצוגה מקדימה עבור סוג קובץ זה</string>
+    <string name="viewer_open_external">פתח באפליקציה</string>
+    <string name="viewer_fit">התאם</string>
+    <string name="viewer_edit">ערוך</string>
+    <string name="viewer_sign">חתום</string>
+    <string name="viewer_info">מידע</string>
+    <string name="viewer_page_label">עמוד</string>
+
+    <!-- Document Viewer — new unique features -->
+    <string name="viewer_reading_mode">מצב קריאה</string>
+    <string name="viewer_qr_stamp">אימות QR</string>
+    <string name="viewer_qr_done">עמוד אימות QR נשמר בהורדות ✓</string>
+    <string name="viewer_stats_title">סטטיסטיקות מסמך</string>
+    <string name="viewer_stats_pages">עמודים</string>
+    <string name="viewer_stats_words">מספר מילים</string>
+    <string name="viewer_stats_chars">תווים</string>
+    <string name="viewer_stats_read_time">זמן קריאה משוער</string>
+    <string name="viewer_stats_size">גודל קובץ</string>
+    <string name="viewer_password_title">PDF מוגן</string>
+    <string name="viewer_password_desc">קובץ PDF זה מוגן בסיסמה. הזן את הסיסמה לפתיחתו.</string>
+    <string name="viewer_password_wrong">סיסמה שגויה. נסה שוב.</string>
+    <string name="viewer_password_unlock">פתח</string>
+
+    <!-- Folder links -->
+    <string name="open_downloads_folder">פתיחת תיקיית הורדות</string>
+    <string name="open_pictures_folder">פתיחת תיקיית תמונות</string>
+    <string name="open_folder">פתיחת תיקייה</string>
+
+    <!-- Settings -->
+    <string name="settings_title">הגדרות</string>
+    <string name="settings_subtitle">העדפות ונגישות</string>
+    <string name="settings_section_appearance">מראה</string>
+    <string name="settings_section_accessibility">נגישות</string>
+    <string name="settings_section_about">אודות</string>
+    <string name="settings_theme">ערכת נושא</string>
+    <string name="settings_language">שפה</string>
+    <string name="settings_font_size">גודל טקסט</string>
+    <string name="settings_high_contrast">ניגודיות גבוהה</string>
+    <string name="settings_high_contrast_desc">מגביר ניגודיות טקסט וגבולות</string>
+    <string name="settings_haptics">משוב רטט</string>
+    <string name="settings_haptics_desc">רטט בפעולות חשובות</string>
+    <string name="settings_version">גרסת האפליקציה</string>
+    <string name="settings_build">מספר בנייה</string>
+    <string name="settings_privacy">מדיניות פרטיות</string>
+    <string name="theme_system">מערכת</string>
+    <string name="theme_light">בהיר</string>
+    <string name="theme_dark">כהה</string>
+    <string name="font_default">רגיל</string>
+    <string name="font_large">גדול</string>
+    <string name="font_xl">גדול מאוד</string>
+
+    <!-- Watermark -->
+    <string name="watermark">סימן מים</string>
+    <string name="watermark_desc">הוסף סימן מים אלכסוני על כל עמוד</string>
+    <string name="watermark_text_label">טקסט סימן מים</string>
+    <string name="watermark_opacity_label">שקיפות: %1$d%%</string>
+    <string name="watermark_button">הוסף סימן מים</string>
+    <string name="watermark_presets">תבניות:</string>
+    <string name="watermark_draft">טיוטה</string>
+    <string name="watermark_confidential">חסוי</string>
+    <string name="watermark_internal">שימוש פנימי</string>
+
+    <!-- Compression -->
+    <string name="compress_pdf">דחיסה</string>
+    <string name="compress_pdf_desc">הקטן את גודל הקובץ לשיתוף</string>
+    <string name="compress_quality_label">איכות: %1$d%%</string>
+    <string name="compress_button">דחוס</string>
+
+    <!-- Password Protection -->
+    <string name="protect_pdf">סיסמה</string>
+    <string name="protect_pdf_desc">הצפן PDF באמצעות סיסמה</string>
+    <string name="protect_password_label">סיסמה (לפחות 4 תווים)</string>
+    <string name="protect_button">הגן</string>
+
+    <!-- Audit Trail -->
+    <string name="audit_trail">פרוטוקול חתימה</string>
+    <string name="audit_trail_desc">הוסף עמוד ביקורת עם חותמת זמן ופרטי מכשיר</string>
+    <string name="audit_signer_label">שם החותם</string>
+    <string name="audit_button">הוסף עמוד ביקורת</string>
+
+    <!-- Auto-date -->
+    <string name="auto_date_button">הוסף תאריך</string>
+    <string name="auto_date_added">חותמת תאריך נוספה</string>
+
+    <!-- Visual stamps -->
+    <string name="visual_stamp_title">הוסף חותמת</string>
+    <string name="stamp_approved">מאושר</string>
+    <string name="stamp_confidential">חסוי</string>
+    <string name="stamp_draft">טיוטה</string>
+    <string name="stamp_final">סופי</string>
+    <string name="stamp_copy">העתק</string>
+    <string name="stamp_void">בטל</string>
+    <string name="stamp_added">חותמת נוספה</string>
+
+    <!-- Biometric -->
+    <string name="biometric_prompt_title">אימות לצורך חתימה</string>
+    <string name="biometric_prompt_subtitle">אמת את זהותך לפני החתימה</string>
+    <string name="biometric_negative_button">ביטול</string>
+    <string name="biometric_not_available">אימות ביומטרי אינו זמין במכשיר זה</string>
+    <string name="biometric_required">נדרש אימות לפני החתימה</string>
+
+    <!-- Tools tab labels (short) -->
+    <string name="tab_edit">עריכה</string>
+    <string name="tab_secure">אבטחה</string>
+    <string name="tab_more">עוד</string>
+
+    <!-- Error messages -->
+    <string name="error_pdf_password">קובץ PDF זה מוגן בסיסמה ולא ניתן לפתיחה.</string>
+    <string name="error_pdf_encrypted">קובץ PDF זה מוצפן ולא ניתן לפתיחה.</string>
+    <string name="error_pdf_load">שגיאה בטעינת PDF: %1$s</string>
+    <string name="scanner_unavailable">הסורק אינו זמין: %1$s</string>
+    <string name="scanner_permission_denied">נדרשת הרשאת מצלמה כדי לסרוק מסמכים.</string>
+
+    <!-- Split with custom pages -->
+    <string name="split_pages_selected">%1$d עמודים נבחרו</string>
+    <string name="split_select_all">בחר הכל</string>
+    <string name="split_clear_selection">נקה בחירה</string>
+    <string name="split_folder_name_title">שם תיקיית הפלט</string>
+    <string name="split_folder_name_hint">שם תיקייה…</string>
+    <string name="split_folder_name_desc">כל העמודים המפוצלים יישמרו בתיקייה זו תחת Downloads/PDF Studio/Split/</string>
+    <string name="split_save_button">שמור</string>
+
+    <!-- Watermark image/logo -->
+    <string name="watermark_mode_text">סימן מים טקסט</string>
+    <string name="watermark_mode_image">לוגו / תמונה כסימן מים</string>
+    <string name="watermark_pick_image">בחר תמונה / לוגו</string>
+    <string name="watermark_image_selected">תמונה נבחרה</string>
+    <string name="watermark_position_label">מיקום</string>
+    <string name="watermark_pos_center">מרכז</string>
+    <string name="watermark_pos_top_left">שמאל עליון</string>
+    <string name="watermark_pos_top_right">ימין עליון</string>
+    <string name="watermark_pos_bottom_left">שמאל תחתון</string>
+    <string name="watermark_pos_bottom_right">ימין תחתון</string>
+
+    <!-- Remote Signing - Sender -->
+    <string name="remote_sign_title">שליחה לחתימה</string>
+    <string name="remote_sign_invite_title">הזמן מישהו לחתום</string>
+    <string name="remote_sign_invite_desc">הזן את כתובת המייל של החותם והודעה אופציונלית. קישור חתימה ייחודי ייווצר עבורו.</string>
+    <string name="remote_sign_email_label">כתובת המייל של החותם</string>
+    <string name="remote_sign_email_error">נא להזין כתובת מייל תקינה</string>
+    <string name="remote_sign_message_label">הודעה לחותם (אופציונלי)</string>
+    <string name="remote_sign_privacy_note">פרטיות קודמת לכל: המסמך שלך לא מועלה לשום שרת. רק טביעת אצבע של המסמך (SHA-256) משותפת.</string>
+    <string name="remote_sign_send_button">שלח בקשת חתימה</string>
+    <string name="remote_sign_session_id">מפגש #%1$s</string>
+    <string name="remote_sign_link_label">קישור לחתימה</string>
+    <string name="remote_sign_qr_label">סרוק את קוד ה־QR במכשיר החתימה</string>
+    <string name="remote_sign_qr_content_desc">קוד QR לקישור החתימה</string>
+    <string name="remote_sign_link_copied">הקישור הועתק ללוח</string>
+    <string name="remote_sign_share_button">שתף קישור לחתימה</string>
+    <string name="remote_sign_share_text">נא לחתום על המסמך ״%1$s״.\n\nפתח קישור זה לסקירה וחתימה:\n%2$s\n\נשלח באמצעות PDF Studio</string>
+    <string name="remote_sign_expires">פג תוקף: %1$s</string>
+    <string name="remote_sign_open_signed">פתח מסמך חתום</string>
+    <string name="remote_sign_cancel_session">בטל מפגש</string>
+    <string name="remote_sign_history_title">מפגשים קודמים</string>
+    <string name="remote_sign_button">שלח לחתימה</string>
+
+    <!-- Remote Signing — Status badges -->
+    <string name="remote_status_pending">ממתין</string>
+    <string name="remote_status_viewed">נצפה</string>
+    <string name="remote_status_signed">נחתם</string>
+    <string name="remote_status_cancelled">בוטל</string>
+    <string name="remote_status_expired">פג תוקף</string>
+
+    <!-- Remote Signing — Signer -->
+    <string name="remote_signer_title">חתימה על מסמך</string>
+    <string name="remote_signer_loading">טוען בקשת חתימה…</string>
+    <string name="remote_signer_doc_subtitle">ממתין לחתימתך</string>
+    <string name="remote_signer_message_label">הודעה מהשולח</string>
+    <string name="remote_signer_hash_label">טביעת אצבע: %1$s</string>
+    <string name="remote_signer_privacy_note">החתימה תוחל מקומית במכשיר זה. המסמך לא מועלה לשום מקום.</string>
+    <string name="remote_signer_proceed_button">סקור וחתום</string>
+    <string name="remote_signer_signed_success_title">המסמך נחתם בהצלחה!</string>
+    <string name="remote_signer_signed_success_desc">המסמך החתום הועבר לשולח.</string>
+    <string name="remote_signer_expired_title">בקשת החתימה פגה תוקף</string>
+    <string name="remote_signer_cancelled_title">בקשת החתימה בוטלה</string>
+    <string name="remote_signer_ended_desc">בקש מהשולח ליצור בקשת חתימה חדשה.</string>
+
+    <!-- Navigation - Remote Sign -->
+    <string name="nav_sign_remote">חתימה מרחוק</string>
+</resources>
